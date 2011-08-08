@@ -1,6 +1,7 @@
 require "rubygems"
 require "nokogiri"
 require "whois"
+require 'open-uri'
 
 TYPE = 'Land'
 RARITY = 'any'
@@ -9,9 +10,8 @@ RARITY = 'any'
 
 @names = []
 (1..22).each do |i|
-  filename = "cardkingdom_#{i}.html"
-  %x(wget "http://www.cardkingdom.com/catalog/view?search=mtg_advanced&filter[type]=#{TYPE}&filter[rarity_all]=#{RARITY}&page=#{i}" -O #{filename})
-  @doc = Nokogiri::HTML(File.open(filename))
+  uri = URI.parse "http://www.cardkingdom.com/catalog/view?search=mtg_advanced&filter[type]=#{TYPE}&filter[rarity_all]=#{RARITY}&page=#{i}"
+  @doc = Nokogiri::HTML(uri.read)
   @doc.css("table.grid[3]").css("tr").each do |tr|
     text = tr.css("td[1]").text.downcase.gsub(/ (\(.*\))/,"").gsub(/[,.' -]/,"")
     unless text == "" || %w(title highmarket murmuringbosk irrigationditch).include?(text)
@@ -30,7 +30,7 @@ File.open(@output, "a") do |f|
       puts "#{name}.com is free!"
     else
       if record.technical_contact
-          ocupant = record.technical_contact.organization 
+          ocupant = record.technical_contact.organization
       elsif record.registrar
           ocupant = record.registrar.organization
       else
@@ -41,5 +41,3 @@ File.open(@output, "a") do |f|
     end
   end
 end
-
-%x(rm cardkingdom_*)
