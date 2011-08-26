@@ -9,7 +9,7 @@ A script that helps you to choose a name for your project using M:TG card names 
 
 ## Usage
 
-    ruby ./blighted_agent -h
+    ruby ./blighted_agent.rb -h
     
     -v, --verbose                    Run verbosely
     -t, --type CARD_TYPE             Card type |Artifact, Creature, Enchant, Instant, Land, Planeswalker, Sorcery|
@@ -20,6 +20,6 @@ A script that helps you to choose a name for your project using M:TG card names 
     
 ##  Example
     
-    ruby ./blighted_agent -k Rogue -c u
+    ruby ./blighted_agent.rb -k Rogue -c u
     
   
